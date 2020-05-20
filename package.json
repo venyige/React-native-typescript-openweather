@@ -10,9 +10,11 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "openweathermap-ts": "^1.2.3",
     "react": "16.11.0",
     "react-native": "^0.62.2",
-    "react-native-cli": "^2.0.1"
+    "react-native-cli": "^2.0.1",
+    "react-native-get-location": "^1.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -27,8 +29,8 @@
     "eslint": "^7.0.0",
     "jest": "^26.0.1",
     "metro-react-native-babel-preset": "^0.59.0",
-    "react-test-renderer": "16.11.0",
     "prettier": "^2.0.4",
+    "react-test-renderer": "16.11.0",
     "typescript": "^3.8.3"
   },
   "jest": {

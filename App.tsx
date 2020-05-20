@@ -90,12 +90,7 @@ class WeatherTsApp extends React.Component<{}, Tstates> {
                         <View style={styles.body}>
                             <View style={styles.sectionContainer}>
                                 <Text style={styles.sectionTitle}>React Native Typescript WeatherTsApp</Text>
-
-
-
-
                                 {loading ? <Text style={styles.sectionDescription}> 'Waiting for the response of Weather Map API'  </Text> :
-
                                     <>
                                         <Text style={styles.sectionDescription}> {weatherData.name}, {weatherData.sys.country}</Text>
                                         <Image style={{ width: 64, height: 64 }} source={{ uri }} />
@@ -104,10 +99,7 @@ class WeatherTsApp extends React.Component<{}, Tstates> {
                                         <Text style={styles.sectionDescription}>Temp. feeling (°C): {weatherData.main.feels_like}</Text>
                                         <Text style={styles.sectionDescription}>Humidity (%): {weatherData.main.humidity}</Text>
                                         <Text style={styles.sectionDescription}>Wind (m/s): {weatherData.wind.speed}</Text>
-                                    </>
-
-                                }
-
+                                    </>}
                             </View>
                         </View>
                     </ScrollView>

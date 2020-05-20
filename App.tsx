@@ -53,7 +53,6 @@ class WeatherTsApp extends React.Component<{}, Tstates> {
         this.weatherFetcher = this.weatherFetcher.bind(this);
     }
     openWeather = new OpenWeatherMap({
-        //apiKey: 'f06f2accadd92df24bf67b49cafd7d11',
         apiKey:ApiCode,
         language: lang,
         units: 'metric'

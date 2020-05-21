@@ -64,3 +64,5 @@ buck-out/
 
 # Secret
 */secret.tsx
+*/weatherproc.tsx
+

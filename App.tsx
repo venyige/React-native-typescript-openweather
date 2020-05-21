@@ -29,12 +29,12 @@ import {
 import OpenWeatherMap from 'openweathermap-ts';
 
 import ApiCode from './components/secret';
-import GeoLoc from 'components/geolocproc';
+import {GeoLoc} from './components/geolocproc';
 
   const lang: string = Platform.select({
-    ios: NativeModules.SettingsManager.settings.AppleLanguages[0]||'en',
+    ios: 'en',
     android: NativeModules.I18nManager.localeIdentifier.split('_')[0]||'en'
-})();  
+});  
 
 interface Tstates {
     weatherData: any | null,
@@ -53,17 +53,17 @@ class WeatherTsApp extends React.Component<{}, Tstates> {
         this.weatherFetcher = this.weatherFetcher.bind(this);
     }
     openWeather = new OpenWeatherMap({
-        //apiKey: 'f06f2accadd92df24bf67b49cafd7d11',
-        apiKey:ApiCode,
+        apiKey:ApiCode(),
         language: lang,
         units: 'metric'
     });
 
     weatherFetcher = async (): Promise<any> => {
         try {
-            const weather = await this.openWeather.getCurrentWeatherByCityId(3054643);
+            const geoloc= await GeoLoc();
+            const weather = await this.openWeather.getCurrentWeatherByGeoCoordinates(+(geoloc.latitude), +(geoloc.longitude));
             const weatherJson = JSON.parse(JSON.stringify(weather));
-            console.log('Weather object is', weather);
+            console.log('Weather object: ', weatherJson.list[0], '//nGeoLoc: ', geoloc.latitude, '; ', geoloc.longitude);
             this.setState({ weatherData: weatherJson, loading: false });
         } catch (error) {
             console.error('Error is ', error);
@@ -76,7 +76,7 @@ class WeatherTsApp extends React.Component<{}, Tstates> {
         if (weatherData === null){
             this.weatherFetcher();
         }else{
-            uri = 'http://openweathermap.org/img/w/' + weatherData.weather[0].icon + '.png';
+            uri = 'http://openweathermap.org/img/w/' + weatherData.list[0].weather[0].icon + '.png';
             console.log(lang);
         }
         return (
@@ -92,13 +92,13 @@ class WeatherTsApp extends React.Component<{}, Tstates> {
                                 <Text style={styles.sectionTitle}>React Native Typescript WeatherTsApp</Text>
                                 {loading ? <Text style={styles.sectionDescription}> 'Waiting for the response of Weather Map API'  </Text> :
                                     <>
-                                        <Text style={styles.sectionDescription}> {weatherData.name}, {weatherData.sys.country}</Text>
+                                        <Text style={styles.sectionDescription}> {weatherData.city.name}, {weatherData.city.country}</Text>
                                         <Image style={{ width: 64, height: 64 }} source={{ uri }} />
-                                        <Text style={styles.sectionDescription}> Description (local): {weatherData.weather[0].description}</Text>
-                                        <Text style={styles.sectionDescription}> Temperature (°C): {weatherData.main.temp} (max: {weatherData.main.temp_max}, min: {weatherData.main.temp_min})</Text>
-                                        <Text style={styles.sectionDescription}>Temp. feeling (°C): {weatherData.main.feels_like}</Text>
-                                        <Text style={styles.sectionDescription}>Humidity (%): {weatherData.main.humidity}</Text>
-                                        <Text style={styles.sectionDescription}>Wind (m/s): {weatherData.wind.speed}</Text>
+                                        <Text style={styles.sectionDescription}> Description (local): {weatherData.list[0].weather[0].description}</Text>
+                                        <Text style={styles.sectionDescription}> Temperature (°C): {weatherData.list[0].main.temp} (max: {weatherData.list[0].main.temp_max}, min: {weatherData.list[0].main.temp_min})</Text>
+                                        <Text style={styles.sectionDescription}>Temp. feeling (°C): {weatherData.list[0].main.feels_like}</Text>
+                                        <Text style={styles.sectionDescription}>Humidity (%): {weatherData.list[0].main.humidity}</Text>
+                                        <Text style={styles.sectionDescription}>Wind (m/s): {weatherData.list[0].wind.speed}</Text>
                                     </>}
                             </View>
                         </View>

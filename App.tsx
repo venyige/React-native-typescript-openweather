@@ -29,12 +29,16 @@ import {
 import OpenWeatherMap from 'openweathermap-ts';
 
 import ApiCode from './components/secret';
-import {GeoLoc} from './components/geolocproc';
+import { GeoLoc } from './components/geolocproc';
 
-  const lang: string = Platform.select({
-    ios: 'en',
+/*   const lang: string = Platform.select({
+    ios: 'en',//
     android: NativeModules.I18nManager.localeIdentifier.split('_')[0]||'en'
-});  
+});   */
+const lang = (Platform.OS === 'ios') ?
+    NativeModules.SettingsManager.settings.AppleLocale ||
+    NativeModules.SettingsManager.settings.AppleLanguages[0] || 'en' :
+    NativeModules.I18nManager.localeIdentifier.split('_')[0] || 'en';
 
 interface Tstates {
     weatherData: any | null,
@@ -53,14 +57,14 @@ class WeatherTsApp extends React.Component<{}, Tstates> {
         this.weatherFetcher = this.weatherFetcher.bind(this);
     }
     openWeather = new OpenWeatherMap({
-        apiKey:ApiCode(),
+        apiKey: ApiCode(),
         language: lang,
         units: 'metric'
     });
 
     weatherFetcher = async (): Promise<any> => {
         try {
-            const geoloc= await GeoLoc();
+            const geoloc = await GeoLoc();
             const weather = await this.openWeather.getCurrentWeatherByGeoCoordinates(+(geoloc.latitude), +(geoloc.longitude));
             const weatherJson = JSON.parse(JSON.stringify(weather));
             console.log('Weather object: ', weatherJson.list[0], '//nGeoLoc: ', geoloc.latitude, '; ', geoloc.longitude);
@@ -73,9 +77,9 @@ class WeatherTsApp extends React.Component<{}, Tstates> {
     render() {
         let uri: any = 'http://openweathermap.org/img/w/01n.png';
         const { weatherData, loading } = this.state;
-        if (weatherData === null){
+        if (weatherData === null) {
             this.weatherFetcher();
-        }else{
+        } else {
             uri = 'http://openweathermap.org/img/w/' + weatherData.list[0].weather[0].icon + '.png';
             console.log(lang);
         }

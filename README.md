@@ -1,6 +1,6 @@
 # React-native-typescript-openweather
 ### Preface 
-I deliberately chosen not to use Expo, as this app has been written in order to give a good sight on my proof of coding react-native in typescript.
+I have decided not to use Expo, as this app has been written in order to give a good sight on my proof of coding react-native in typescript.
 ### Prerequisites
 Preference - npm:
 ```

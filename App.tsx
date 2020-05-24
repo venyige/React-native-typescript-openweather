@@ -35,7 +35,7 @@ import { GeoLoc } from './components/geolocproc';
     ios: 'en',//
     android: NativeModules.I18nManager.localeIdentifier.split('_')[0]||'en'
 });   */
-const lang = (Platform.OS === 'ios') ?
+const lang: string = (Platform.OS === 'ios') ?
     NativeModules.SettingsManager.settings.AppleLocale ||
     NativeModules.SettingsManager.settings.AppleLanguages[0] || 'en' :
     NativeModules.I18nManager.localeIdentifier.split('_')[0] || 'en';
